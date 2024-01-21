@@ -1,0 +1,379 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "sean",
+      "version": "1.0.0",
+      "title": "Seans-Python3-Flask-Rest-Boilerplate",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "servers": [
+      {
+        "url": "/"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Alert directing",
+        "description": "Example API for getting and sending alerts"
+      }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+              "summary": "Login",
+              "tags": ["Authentication"],
+              "requestBody": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/LoginRequest"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Successful login or Invalid email or password",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/LoginResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+    "/GetAllalerts": {
+        "get": {
+          "tags": ["Alerts"],
+          "summary": "Get all alerts",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAllAlertsResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/GetAllusers": {
+        "get": {
+          "summary": "Get all users",
+          "tags": ["Users"],
+          "responses": {
+            "200": {
+              "description": "Successful retrieval",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAllUsersResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/AddUser": {
+        "post": {
+          "summary": "Add a new user",
+          "tags": ["Users"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddUserRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User added successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid email or password",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/UpdateInfo": {
+        "put": {
+          "summary": "Update user information",
+          "tags": ["Users"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateInfoRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User information updated successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/Delete": {
+        "delete": {
+          "summary": "Delete a user",
+          "tags": ["Users"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteUserRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User deleted successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/send": {
+        "post": {
+          "summary": "Send email",
+          "tags": ["Email"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendEmailRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Email sent successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SuccessResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+        "schemas": {
+          "LoginRequest": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+          },
+          "LoginResponse": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "authenticated": {
+                "type": "boolean"
+              }
+            }
+          },
+          "SuccessResponse": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          },
+        "ErrorResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "GetAllAlertsResponse": {
+          "type": "object",
+          "properties": {
+            "alerts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Alert"
+              }
+            },
+            "citizens": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Citizen"
+              }
+            }
+          }
+        },
+        "Alert": {
+          "type": "object",
+          "properties": {
+            "property1": {
+              "type": "string"
+            },
+            "property2": {
+              "type": "integer"
+            }
+          }
+        },
+        "Citizen": {
+          "type": "object",
+          "properties": {
+            "property3": {
+              "type": "string"
+            },
+            "property4": {
+              "type": "boolean"
+            }
+          }
+        },
+        "GetAllUsersResponse": {
+          "type": "object",
+          "properties": {
+            "users": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "User": {
+          "type": "object",
+          "properties": {
+            "property5": {
+              "type": "string"
+            },
+            "property6": {
+              "type": "integer"
+            }
+          }
+        },
+        "AddUserRequest": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            }
+          }
+        },
+        "UpdateInfoRequest": {
+            "type": "object",
+            "properties": {
+              "id": {
+                    "type": "integer"
+                  },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+          },
+        "DeleteUserRequest": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "ID of the user to be deleted"
+              }
+
+            },
+            "required": ["id"]
+          },
+          "SendEmailRequest": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              }
+
+          }
+
+      }
+    }
+  }
